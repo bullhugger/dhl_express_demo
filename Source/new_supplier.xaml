@@ -4,12 +4,16 @@
     <x:Property Name="string_internal_name" Type="InArgument(x:String)" />
     <x:Property Name="string_external_name" Type="InArgument(x:String)" />
     <x:Property Name="string_profile_picture" Type="InArgument(x:String)" />
-    <x:Property Name="screenshot_external_name" Type="OutArgument(ui:Image)" />
+    <x:Property Name="string_path_screenshot_external_name" Type="InArgument(x:String)" />
+    <x:Property Name="string_csv_name" Type="InArgument(x:String)" />
+    <x:Property Name="string_path_csv_export_data" Type="InArgument(x:String)" />
+    <x:Property Name="string_path_csv_export" Type="InArgument(x:String)" />
+    <x:Property Name="string_path_csv_export_formated" Type="OutArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1359,3648</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1274,4726</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>new_supplier_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -37,6 +41,7 @@
       <x:String>UiPath.UIAutomationNext.Enums</x:String>
       <x:String>System.Collections.ObjectModel</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -66,22 +71,29 @@
       <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="new_supplier" sap:VirtualizedContainerService.HintSize="644,3583" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="new_supplier" sap:VirtualizedContainerService.HintSize="644,4661" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:OpenBrowser CommunicationMethod="{x:Null}" Hidden="{x:Null}" NewSession="{x:Null}" Private="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Open Browser" sap:VirtualizedContainerService.HintSize="602,3491" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" Url="[url_address]">
+    <ui:OpenBrowser CommunicationMethod="{x:Null}" Hidden="{x:Null}" NewSession="{x:Null}" Private="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Open Browser" sap:VirtualizedContainerService.HintSize="602,4569" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" Url="[url_address]">
       <ui:OpenBrowser.Body>
         <ActivityAction x:TypeArguments="x:Object">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
           </ActivityAction.Argument>
-          <Sequence sap:VirtualizedContainerService.HintSize="568,3390" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <Sequence sap:VirtualizedContainerService.HintSize="568,4468" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="current_date_time" />
+              <Variable x:TypeArguments="x:String" Name="string_csv_downloaded_name" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -311,7 +323,7 @@
                   <OutArgument x:TypeArguments="x:String">[current_date]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">[now.AddDays(-43).tostring(“MM/dd/yyyy”)]</InArgument>
+                  <InArgument x:TypeArguments="x:String">[now.AddDays(-43).ToString(“MM/dd/yyyy”)]</InArgument>
                 </Assign.Value>
               </Assign>
               <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;Current date 43 days ago is: &quot; + current_date]" />
@@ -372,7 +384,11 @@
                 </ui:Click.Target>
               </ui:Click>
             </Sequence>
-            <Sequence DisplayName="Sequence Screenshot" sap:VirtualizedContainerService.HintSize="526,664" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence DisplayName="Sequence Screenshot" sap:VirtualizedContainerService.HintSize="526,796" sap2010:WorkflowViewState.IdRef="Sequence_3">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="ui:Image" Name="screenshot_external_name" />
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -446,7 +462,58 @@
                   </ui:Target>
                 </ui:TakeScreenshot.Target>
               </ui:TakeScreenshot>
+              <ui:SaveImage DisplayName="Save Image" FileName="[string_path_screenshot_external_name]" sap:VirtualizedContainerService.HintSize="334,92" sap2010:WorkflowViewState.IdRef="SaveImage_1" Image="[screenshot_external_name]" />
             </Sequence>
+            <Assign sap:VirtualizedContainerService.HintSize="526,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[current_date_time]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[string_csv_name + " " + system.DateTime.Now.ToString("yyyy_mm_dd hh_mm_ss")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="526,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[current_date_time]" />
+            <ui:Click AlterIfDisabled="{x:Null}" CursorMotionType="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click export csv" sap:VirtualizedContainerService.HintSize="526,106" sap2010:WorkflowViewState.IdRef="Click_12" KeyModifiers="None" MouseButton="BTN_LEFT">
+              <ui:Click.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:Click.CursorPosition>
+              <ui:Click.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="4c5f050d-4773-476d-b5f8-73fe002f8c49" InformativeScreenshot="9789f74de3f4f68da41cd27ff4cac0ef" Selector="&lt;webctrl aaname='Export CSV' parentid='controlWrapper' tag='SPAN' /&gt;">
+                  <ui:Target.TimeoutMS>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:Target.TimeoutMS>
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:Click.Target>
+            </ui:Click>
+            <Assign sap:VirtualizedContainerService.HintSize="526,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[string_csv_downloaded_name]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Join(“”, Directory.GetFiles(string_path_csv_export,”*”,SearchOption.AllDirectories).OrderByDescending(Function(d) New FileInfo(d).CreationTime).Take(1) )]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="526,61" sap2010:WorkflowViewState.IdRef="WriteLine_3" Text="[string_csv_downloaded_name]" />
+            <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="526,61" sap2010:WorkflowViewState.IdRef="WriteLine_4" Text="[string_path_csv_export_data + current_date_time]" />
+            <ui:MoveFile ContinueOnError="{x:Null}" Destination="[string_path_csv_export_data + current_date_time + &quot;.csv&quot;]" DisplayName="Move File" sap:VirtualizedContainerService.HintSize="526,157" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="False" Path="[string_csv_downloaded_name]" />
+            <Assign sap:VirtualizedContainerService.HintSize="526,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[string_path_csv_export_formated]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[string_path_csv_export_data + current_date_time + ".csv"]</InArgument>
+              </Assign.Value>
+            </Assign>
           </Sequence>
         </ActivityAction>
       </ui:OpenBrowser.Body>

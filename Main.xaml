@@ -148,7 +148,6 @@
                       <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_TransactionData">
                         <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="TransactionData" />
                       </InOutArgument>
-                      <InArgument x:TypeArguments="ui:Image" x:Key="screenshot_external_name" />
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </TryCatch.Try>
