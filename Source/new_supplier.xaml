@@ -9,6 +9,7 @@
     <x:Property Name="string_path_csv_export_data" Type="InArgument(x:String)" />
     <x:Property Name="string_path_csv_export" Type="InArgument(x:String)" />
     <x:Property Name="string_path_csv_export_formated" Type="OutArgument(x:String)" />
+    <x:Property Name="current_date_time" Type="OutArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -469,7 +470,7 @@
                 <OutArgument x:TypeArguments="x:String">[current_date_time]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[string_csv_name + " " + system.DateTime.Now.ToString("yyyy_mm_dd hh_mm_ss")]</InArgument>
+                <InArgument x:TypeArguments="x:String">[string_csv_name + " " + system.DateTime.Now.ToString("yyyy_MM_dd hh_mm_ss")]</InArgument>
               </Assign.Value>
             </Assign>
             <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="526,61" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="[current_date_time]" />

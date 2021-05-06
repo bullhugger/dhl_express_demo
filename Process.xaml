@@ -104,6 +104,7 @@
         <InArgument x:TypeArguments="x:String" x:Key="string_path_csv_export_formated">
           <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;string_path_csv_export_formated&quot;).ToString" />
         </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="current_date_time" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
   </Sequence>
